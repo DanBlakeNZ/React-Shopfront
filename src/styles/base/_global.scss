@@ -21,3 +21,21 @@ body {
   scroll-behavior: smooth;
   line-height: 1.25em;
 }
+
+// Global Classes
+.center-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.content-container {
+  width: 100%;
+  max-width: 120rem;
+  margin: 0 auto;
+}
+
+.page {
+  height: 100vh;
+  padding: 5rem 0;
+}

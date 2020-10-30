@@ -2,11 +2,11 @@ import React from "react";
 
 const Header = () => {
   return (
-    <header className="header">
+    <footer className="footer">
       <div className="content-container">
-        <p className="header-text">Im the header</p>
+        <p className="footer-text">Im the footer</p>
       </div>
-    </header>
+    </footer>
   );
 };
 

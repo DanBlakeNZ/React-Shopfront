@@ -1,0 +1,17 @@
+.modal-shade {
+  height: 100%;
+  width: 100%;
+  background-color: rgba(119, 136, 153, 0.5);
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.modal-content-container {
+  border: 1px solid black;
+  border-radius: 1rem;
+  background-color: #fff;
+  width: 100%;
+  max-width: 50rem;
+  height: 40rem;
+}
