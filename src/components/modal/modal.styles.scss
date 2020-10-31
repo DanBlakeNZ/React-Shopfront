@@ -8,10 +8,18 @@
 }
 
 .modal-content-container {
+  position: relative;
   border: 1px solid black;
   border-radius: 1rem;
   background-color: #fff;
   width: 100%;
   max-width: 50rem;
-  height: 40rem;
+  min-height: 30rem;
+
+  .close-button {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+    cursor: pointer;
+  }
 }

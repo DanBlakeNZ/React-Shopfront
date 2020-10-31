@@ -1,4 +1,6 @@
 import React from "react";
+import axios from "axios";
+import EmailValidator from "email-validator";
 import CustomButton from "../custom-button/custom-button.component";
 import FormInput from "../form-input/form-input.component";
 
@@ -10,45 +12,75 @@ class RegisterForm extends React.Component {
       name: "",
       email: "",
       confirmEmail: "",
+      errors: [],
     };
   }
-
-  handleSubmit = async (event) => {
-    event.preventDefault();
-    const { name, email } = this.state;
-    const requestOptions = {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ name, email }),
-    };
-    fetch(
-      "https://l94wc2001h.execute-api.ap-southeast-2.amazonaws.com/prod/fake-auth",
-      requestOptions
-    )
-      .then(async (response) => {
-        const data = await response.json();
-
-        // check for error response
-        if (!response.ok) {
-          // get error message from body or default to response status
-          const error = (data && data.message) || response.status;
-          return Promise.reject(error);
-        }
-
-        console.log(data);
-      })
-      .catch((error) => {
-        console.error("There was an error!", error);
-      });
-  };
 
   handleChange = (event) => {
     const { name, value } = event.target;
     this.setState({ [name]: value });
   };
 
-  render() {
+  handleSubmit = (event) => {
+    event.preventDefault();
     const { name, email, confirmEmail } = this.state;
+    this.setState({ errors: [] });
+
+    if (name.length < 3) {
+      this.setErrorText("Full Name must be at least 3 characters long", "name");
+    }
+
+    if (email !== confirmEmail) {
+      this.setErrorText("Emails don't match", "confirmEmail");
+    }
+
+    if (!EmailValidator.validate(email)) {
+      this.setErrorText("Please enter a valid email", "email");
+    }
+
+    // Check for errors first
+    this.handleRegistration(name, email);
+  };
+
+  handleRegistration = async (name, email) => {
+    const handleSuccess = () => {
+      this.setState = {
+        name: "",
+        email: "",
+        confirmEmail: "",
+      };
+      this.props.registrationComplete();
+    };
+
+    const handleError = (error) => {
+      console.log(error);
+      this.setErrorText(
+        "Sorry, something went wrong. Please check your details and try again.",
+        "api"
+      );
+    };
+
+    axios
+      .post(
+        "https://l94wc2001h.execute-api.ap-southeast-2.amazonaws.com/prod/fake-auth",
+        { name, email }
+      )
+      .then(function (response) {
+        handleSuccess();
+      })
+      .catch(function (error) {
+        handleError(error);
+      });
+  };
+
+  setErrorText(errorText, errorType) {
+    this.setState((prevState) => ({
+      errors: [...prevState.errors, { errorType, message: errorText }],
+    }));
+  }
+
+  render() {
+    const { name, email, confirmEmail, errors } = this.state;
     return (
       <div>
         <form className="sign-up-form" onSubmit={this.handleSubmit}>
@@ -56,9 +88,10 @@ class RegisterForm extends React.Component {
             type="text"
             name="name"
             value={name}
-            label="Name"
+            label="Full Name"
             onChange={this.handleChange}
             required
+            autoFocus
           />
           <FormInput
             type="email"
@@ -78,6 +111,8 @@ class RegisterForm extends React.Component {
           />
           <CustomButton text="Submit" />
         </form>
+        {errors.length > 0 &&
+          errors.map((error) => <p key={error.errorType}> {error.message} </p>)}
       </div>
     );
   }

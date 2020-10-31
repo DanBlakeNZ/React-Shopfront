@@ -1,17 +1,27 @@
 import React from "react";
 
-import RegisterForm from "../register-form/register-form.component";
-
 class Modal extends React.Component {
-  state = {
-    registered: false,
-  };
+  constructor(props) {
+    super(props);
+    this.modalRef = React.createRef();
+  }
 
   render() {
+    const { toggleModal, children } = this.props;
+
+    // Handles clicks outside the modal vs inside the modal via the use of modalRef.
+    // If outside the modal will toggle the modal to close, if inside nothing will happen.
+    const handleOutsideClick = (e) => {
+      !this.modalRef.current.contains(e.target) && toggleModal();
+    };
+
     return (
-      <div className="modal-shade center-content">
-        <div className="modal-content-container center-content">
-          <RegisterForm registered={this.state.registered} />
+      <div className="modal-shade center-content" onClick={handleOutsideClick}>
+        <div className="modal-content-container center-content" ref={this.modalRef}>
+          <div className="close-button" onClick={toggleModal}>
+            X
+          </div>
+          {children}
         </div>
       </div>
     );
