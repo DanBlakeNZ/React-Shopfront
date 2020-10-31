@@ -3,22 +3,17 @@ import CustomButton from "../../components/custom-button/custom-button.component
 import Headline from "../../components/headline/headline.component";
 import Modal from "../../components/modal/modal.component";
 import Subheading from "../../components/subheading/subheading.component";
-import RegisterForm from "../../components/register-form/register-form.component";
+import Register from "../../components/register/register.component";
 
 const HomePage = () => {
   const [showModal, setShowModal] = useState(false);
-  const [hasRegistered, setHasRegistered] = useState(false);
 
   const toggleModal = () => {
     setShowModal(!showModal);
   };
 
-  const registrationComplete = () => {
-    setHasRegistered(true);
-  };
-
   return (
-    <div className="page center-content">
+    <div className="page homepage center-content">
       <div className="hero-block">
         <div>
           <Headline text="A better way to enjoy your day" />
@@ -26,11 +21,7 @@ const HomePage = () => {
           <CustomButton text="Request an invite" onClick={toggleModal} />
           {showModal && (
             <Modal toggleModal={toggleModal}>
-              {hasRegistered ? (
-                <p>Thank you are now registered. We will be in touch soon!</p>
-              ) : (
-                <RegisterForm registrationComplete={registrationComplete} />
-              )}
+              <Register toggleModal={toggleModal} />
             </Modal>
           )}
         </div>

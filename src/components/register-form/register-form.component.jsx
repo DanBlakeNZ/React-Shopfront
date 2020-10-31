@@ -3,6 +3,8 @@ import registerDetails from "../../services/register";
 import EmailValidator from "email-validator";
 import CustomButton from "../custom-button/custom-button.component";
 import FormInput from "../form-input/form-input.component";
+import Notification from "../notification/notification.component";
+import RegisterTypes from "../../constants/register.types";
 
 class Register extends React.Component {
   constructor(props) {
@@ -13,7 +15,6 @@ class Register extends React.Component {
       email: "",
       confirmEmail: "",
       errors: [],
-      submitting: false,
     };
   }
 
@@ -39,17 +40,17 @@ class Register extends React.Component {
   };
 
   handleRegistration = (name, email) => {
-    this.setState({ submitting: true });
+    this.props.updateProgress(RegisterTypes.SUBMITTING);
 
     const handleError = (error) => {
       console.log(error);
-      this.setState({ submitting: false });
-      this.setErrorText("Sorry, something went wrong. Please try again.", "api");
+      this.props.updateProgress(RegisterTypes.INCOMPLETE);
+      this.setErrorText("Sorry, something went wrong. Please try again.", "warning");
     };
 
     registerDetails(name, email).then((response) => {
       if (response.status === 200) {
-        this.props.registrationComplete();
+        this.props.updateProgress(RegisterTypes.COMPLETE);
       } else {
         handleError(response);
       }
@@ -58,7 +59,7 @@ class Register extends React.Component {
 
   validateName = (name) => {
     if (name.length < 3) {
-      this.setErrorText("Full Name must be at least 3 characters long", "name");
+      this.setErrorText("Full Name must be at least 3 characters long", "warning");
       return false;
     }
     return true;
@@ -66,7 +67,7 @@ class Register extends React.Component {
 
   validateConfirmEmail = (email, confirmEmail) => {
     if (email !== confirmEmail) {
-      this.setErrorText("Emails don't match", "confirmEmail");
+      this.setErrorText("Confirm Email doesn't match", "warning");
       return false;
     }
     return true;
@@ -74,7 +75,7 @@ class Register extends React.Component {
 
   validateEmail = (email) => {
     if (!EmailValidator.validate(email)) {
-      this.setErrorText("Please enter a valid email", "email");
+      this.setErrorText("Please enter a valid email", "warning");
       return false;
     }
     return true;
@@ -87,41 +88,42 @@ class Register extends React.Component {
   }
 
   render() {
-    const { name, email, confirmEmail, errors, submitting } = this.state;
+    const { name, email, confirmEmail, errors } = this.state;
     return (
-      <div>
-        <form className="sign-up-form" onSubmit={this.handleSubmit}>
-          <FormInput
-            type="text"
-            name="name"
-            value={name}
-            label="Full Name"
-            onChange={this.handleChange}
-            required
-            autoFocus
-          />
-          <FormInput
-            type="email"
-            name="email"
-            value={email}
-            label="Email"
-            onChange={this.handleChange}
-            required
-          />
-          <FormInput
-            type="email"
-            name="confirmEmail"
-            value={confirmEmail}
-            label="Confirm Email"
-            onChange={this.handleChange}
-            required
-          />
-          <CustomButton text="Submit" />
-        </form>
-        {errors.length > 0 &&
-          errors.map((error) => <p key={error.errorType}> {error.message} </p>)}
-        {submitting && <p>Submitting...</p>}
-      </div>
+      <form className="sign-up-form" onSubmit={this.handleSubmit}>
+        <FormInput
+          type="text"
+          name="name"
+          value={name}
+          label="Full Name"
+          onChange={this.handleChange}
+          required
+          autoFocus
+        />
+        <FormInput
+          type="email"
+          name="email"
+          value={email}
+          label="Email"
+          onChange={this.handleChange}
+          required
+        />
+        <FormInput
+          type="email"
+          name="confirmEmail"
+          value={confirmEmail}
+          label="Confirm Email"
+          onChange={this.handleChange}
+          required
+        />
+        <CustomButton text="Submit" />
+
+        {errors.map((error, i) => (
+          <Notification key={i} type={error.errorType}>
+            {error.message}
+          </Notification>
+        ))}
+      </form>
     );
   }
 }
