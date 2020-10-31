@@ -27,7 +27,7 @@ const HomePage = () => {
           {showModal && (
             <Modal toggleModal={toggleModal}>
               {hasRegistered ? (
-                <p>Registered</p>
+                <p>Thank you are now registered. We will be in touch soon!</p>
               ) : (
                 <RegisterForm registrationComplete={registrationComplete} />
               )}

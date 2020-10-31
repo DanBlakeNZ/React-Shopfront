@@ -1,10 +1,10 @@
 import React from "react";
-import axios from "axios";
+import registerDetails from "../../services/register";
 import EmailValidator from "email-validator";
 import CustomButton from "../custom-button/custom-button.component";
 import FormInput from "../form-input/form-input.component";
 
-class RegisterForm extends React.Component {
+class Register extends React.Component {
   constructor(props) {
     super(props);
 
@@ -13,6 +13,7 @@ class RegisterForm extends React.Component {
       email: "",
       confirmEmail: "",
       errors: [],
+      submitting: false,
     };
   }
 
@@ -26,51 +27,57 @@ class RegisterForm extends React.Component {
     const { name, email, confirmEmail } = this.state;
     this.setState({ errors: [] });
 
-    if (name.length < 3) {
-      this.setErrorText("Full Name must be at least 3 characters long", "name");
-    }
-
-    if (email !== confirmEmail) {
-      this.setErrorText("Emails don't match", "confirmEmail");
-    }
-
-    if (!EmailValidator.validate(email)) {
-      this.setErrorText("Please enter a valid email", "email");
-    }
-
-    // Check for errors first
-    this.handleRegistration(name, email);
+    this.fieldsAreValid(name, email, confirmEmail) &&
+      this.handleRegistration(name, email);
   };
 
-  handleRegistration = async (name, email) => {
-    const handleSuccess = () => {
-      this.setState = {
-        name: "",
-        email: "",
-        confirmEmail: "",
-      };
-      this.props.registrationComplete();
-    };
+  fieldsAreValid = (name, email, confirmEmail) => {
+    const nameIsValid = this.validateName(name);
+    const matchingEmails = this.validateConfirmEmail(email, confirmEmail);
+    const emailIsValid = this.validateEmail(email);
+    return nameIsValid && matchingEmails && emailIsValid;
+  };
+
+  handleRegistration = (name, email) => {
+    this.setState({ submitting: true });
 
     const handleError = (error) => {
       console.log(error);
-      this.setErrorText(
-        "Sorry, something went wrong. Please check your details and try again.",
-        "api"
-      );
+      this.setState({ submitting: false });
+      this.setErrorText("Sorry, something went wrong. Please try again.", "api");
     };
 
-    axios
-      .post(
-        "https://l94wc2001h.execute-api.ap-southeast-2.amazonaws.com/prod/fake-auth",
-        { name, email }
-      )
-      .then(function (response) {
-        handleSuccess();
-      })
-      .catch(function (error) {
-        handleError(error);
-      });
+    registerDetails(name, email).then((response) => {
+      if (response.status === 200) {
+        this.props.registrationComplete();
+      } else {
+        handleError(response);
+      }
+    });
+  };
+
+  validateName = (name) => {
+    if (name.length < 3) {
+      this.setErrorText("Full Name must be at least 3 characters long", "name");
+      return false;
+    }
+    return true;
+  };
+
+  validateConfirmEmail = (email, confirmEmail) => {
+    if (email !== confirmEmail) {
+      this.setErrorText("Emails don't match", "confirmEmail");
+      return false;
+    }
+    return true;
+  };
+
+  validateEmail = (email) => {
+    if (!EmailValidator.validate(email)) {
+      this.setErrorText("Please enter a valid email", "email");
+      return false;
+    }
+    return true;
   };
 
   setErrorText(errorText, errorType) {
@@ -80,7 +87,7 @@ class RegisterForm extends React.Component {
   }
 
   render() {
-    const { name, email, confirmEmail, errors } = this.state;
+    const { name, email, confirmEmail, errors, submitting } = this.state;
     return (
       <div>
         <form className="sign-up-form" onSubmit={this.handleSubmit}>
@@ -113,9 +120,10 @@ class RegisterForm extends React.Component {
         </form>
         {errors.length > 0 &&
           errors.map((error) => <p key={error.errorType}> {error.message} </p>)}
+        {submitting && <p>Submitting...</p>}
       </div>
     );
   }
 }
 
-export default RegisterForm;
+export default Register;
