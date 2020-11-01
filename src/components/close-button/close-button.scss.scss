@@ -1,0 +1,14 @@
+.close-button {
+  cursor: pointer;
+  background-color: transparent;
+  font-size: 1.4rem;
+  line-height: 1.6rem;
+  font-weight: lighter;
+  color: $purple;
+  transition: all 0.3s ease 0s;
+
+  &:hover {
+    color: $purple-dark;
+    font-size: 1.5rem;
+  }
+}

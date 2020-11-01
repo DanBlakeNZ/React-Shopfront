@@ -1,9 +1,21 @@
 // Colors
 $text-black: #232323;
-$text-gray: #7a7a7a;
+$text-gray: #343a40;
 $hotpink: #ff69b4;
+$purple: #6508f7;
+$purple-dark: #4505ab;
+$success: #28a745;
+$danger: #dc3545;
+$warning: #ffc107;
+$shadow: rgba(101, 8, 247, 0.4);
 
-// Fonts:
+// 101,8,247)
 
+// Fonts
+$josefin: "Josefin Slab", serif;
+$quicksand: "Quicksand", sans-serif;
+
+// Spacing
+$padding-small: 1.5rem;
 // Breakpoints
 $tablet: 768px;

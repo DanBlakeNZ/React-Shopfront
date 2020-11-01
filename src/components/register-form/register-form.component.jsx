@@ -1,6 +1,7 @@
 import React from "react";
 import registerDetails from "../../services/register";
 import EmailValidator from "email-validator";
+import Spinner from "../spinner/spinner.component";
 import CustomButton from "../custom-button/custom-button.component";
 import FormInput from "../form-input/form-input.component";
 import Notification from "../notification/notification.component";
@@ -45,7 +46,10 @@ class Register extends React.Component {
     const handleError = (error) => {
       console.log(error);
       this.props.updateProgress(RegisterTypes.INCOMPLETE);
-      this.setErrorText("Sorry, something went wrong. Please try again.", "warning");
+      this.setErrorText(
+        "Sorry, something went wrong. Please check your details and try again.",
+        "danger"
+      );
     };
 
     registerDetails(name, email).then((response) => {
@@ -59,7 +63,7 @@ class Register extends React.Component {
 
   validateName = (name) => {
     if (name.length < 3) {
-      this.setErrorText("Full Name must be at least 3 characters long", "warning");
+      this.setErrorText("Full Name must be at least 3 characters long.", "danger");
       return false;
     }
     return true;
@@ -67,7 +71,7 @@ class Register extends React.Component {
 
   validateConfirmEmail = (email, confirmEmail) => {
     if (email !== confirmEmail) {
-      this.setErrorText("Confirm Email doesn't match", "warning");
+      this.setErrorText("Emails don't match.", "danger");
       return false;
     }
     return true;
@@ -75,7 +79,7 @@ class Register extends React.Component {
 
   validateEmail = (email) => {
     if (!EmailValidator.validate(email)) {
-      this.setErrorText("Please enter a valid email", "warning");
+      this.setErrorText("Please enter a valid email.", "danger");
       return false;
     }
     return true;
@@ -90,41 +94,47 @@ class Register extends React.Component {
   render() {
     const { name, email, confirmEmail, errors } = this.state;
     return (
-      <form className="sign-up-form" onSubmit={this.handleSubmit}>
-        <FormInput
-          type="text"
-          name="name"
-          value={name}
-          label="Full Name"
-          onChange={this.handleChange}
-          required
-          autoFocus
-        />
-        <FormInput
-          type="email"
-          name="email"
-          value={email}
-          label="Email"
-          onChange={this.handleChange}
-          required
-        />
-        <FormInput
-          type="email"
-          name="confirmEmail"
-          value={confirmEmail}
-          label="Confirm Email"
-          onChange={this.handleChange}
-          required
-        />
+      <div>
+        {this.props.registrationProgress === RegisterTypes.SUBMITTING ? (
+          <Spinner />
+        ) : (
+          <form className="register-form" onSubmit={this.handleSubmit}>
+            <FormInput
+              type="text"
+              name="name"
+              value={name}
+              label="Full Name"
+              onChange={this.handleChange}
+              required
+              autoFocus
+            />
+            <FormInput
+              type="email"
+              name="email"
+              value={email}
+              label="Email"
+              onChange={this.handleChange}
+              required
+            />
+            <FormInput
+              type="email"
+              name="confirmEmail"
+              value={confirmEmail}
+              label="Confirm Email"
+              onChange={this.handleChange}
+              required
+            />
 
-        {errors.map((error, i) => (
-          <Notification key={i} type={error.errorType}>
-            {error.message}
-          </Notification>
-        ))}
+            {errors.map((error, i) => (
+              <Notification key={i} type={error.errorType}>
+                {error.message}
+              </Notification>
+            ))}
 
-        <CustomButton text="Submit" />
-      </form>
+            <CustomButton text="Submit" type="secondary" />
+          </form>
+        )}
+      </div>
     );
   }
 }

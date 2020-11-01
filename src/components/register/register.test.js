@@ -4,7 +4,7 @@ import { shallow } from "enzyme";
 import Register from "./register.component";
 import Spinner from "../spinner/spinner.component";
 import RegisterForm from "../register-form/register-form.component";
-import TextWithButton from "../text-with-button/text-with-button.component";
+// import TextWithButton from "../text-with-button/text-with-button.component";
 import RegisterTypes from "../../constants/register.types";
 
 describe("Register component", () => {

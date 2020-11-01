@@ -1,15 +1,20 @@
 .header {
-  border: 1px solid black;
-  width: 100%;
-  height: 5rem;
-  display: flex;
   align-items: center;
+  background: #fff;
+  box-shadow: 0 0 1rem 0 $shadow;
+  display: flex;
+  height: 5rem;
   position: fixed;
   top: 0;
-  background: #fff;
+  width: 100%;
+  z-index: 1;
 }
 
 .header-text {
-  color: $hotpink;
+  color: $purple;
+  font-family: $josefin;
+  font-size: 2.5rem;
+  line-height: 2.5rem;
+  padding-left: $padding-small;
   text-transform: uppercase;
 }

@@ -1,4 +1,5 @@
 import React from "react";
+import CloseButton from "../close-button/close-button.component";
 
 class Modal extends React.Component {
   constructor(props) {
@@ -18,9 +19,7 @@ class Modal extends React.Component {
     return (
       <div className="modal-shade center-content" onClick={handleOutsideClick}>
         <div className="modal-content-container center-content" ref={this.modalRef}>
-          <button className="close-button" onClick={toggleModal}>
-            X
-          </button>
+          <CloseButton onClick={toggleModal} />
           {children}
         </div>
       </div>

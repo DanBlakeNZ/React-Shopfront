@@ -1,7 +1,8 @@
 import React from "react";
-import Spinner from "../spinner/spinner.component";
 import RegisterForm from "../register-form/register-form.component";
-import TextWithButton from "../text-with-button/text-with-button.component";
+import CustomButton from "../custom-button/custom-button.component";
+import Subheading from "../subheading/subheading.component";
+
 import RegisterTypes from "../../constants/register.types"; //Used to avoid typos
 
 class Register extends React.Component {
@@ -25,12 +26,23 @@ class Register extends React.Component {
     const { registrationProgress } = this.state;
     return (
       <div className="register">
-        {registrationProgress === RegisterTypes.INCOMPLETE && (
-          <RegisterForm updateProgress={this.setRegistrationProgress} />
+        {registrationProgress !== RegisterTypes.COMPLETE && (
+          <>
+            <Subheading text={"Request an Invite"} />
+            <RegisterForm
+              registrationProgress={registrationProgress}
+              updateProgress={this.setRegistrationProgress}
+            />
+          </>
         )}
-        {registrationProgress === RegisterTypes.SUBMITTING && <Spinner />}
         {registrationProgress === RegisterTypes.COMPLETE && (
-          <TextWithButton onClick={this.closeModal}>Thanks!</TextWithButton>
+          <>
+            <Subheading text={"All done!"} />
+            <Subheading
+              text={"You will be the first to experience Broccoli & Co. when we launch."}
+            />
+            <CustomButton text="Thanks" type="secondary" onClick={this.closeModal} />
+          </>
         )}
       </div>
     );

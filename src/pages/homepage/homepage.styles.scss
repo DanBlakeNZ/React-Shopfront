@@ -3,10 +3,10 @@
   max-width: 60rem;
   height: 40rem;
   align-items: center;
-  display: flex;
   justify-content: center;
   text-align: center;
-  color: #000;
+  padding: $padding-small;
+  letter-spacing: 0.1rem;
   h2 {
     margin-bottom: 2rem;
   }

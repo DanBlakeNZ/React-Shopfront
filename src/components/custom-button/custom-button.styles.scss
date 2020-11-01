@@ -1,10 +1,28 @@
 .custom-button {
-  color: #fff;
-  padding: 1rem 1.5rem;
-  border-radius: 2rem;
+  padding: 1rem 2rem;
+  border-radius: 1.5rem;
   min-width: 10rem;
+  transition: all 0.3s ease 0s;
+  font-size: 1.5rem;
+  line-height: 1.5rem;
 
   &.primary {
-    background: $hotpink;
+    background: $purple;
+    color: #fff;
+
+    &:hover {
+      background: $purple-dark;
+    }
+  }
+
+  &.secondary {
+    background: #fff;
+    color: $purple;
+    border: 0.01rem solid $purple;
+
+    &:hover {
+      background: $purple;
+      color: #fff;
+    }
   }
 }

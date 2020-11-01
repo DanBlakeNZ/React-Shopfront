@@ -15,16 +15,14 @@ const HomePage = () => {
   return (
     <div className="page homepage center-content">
       <div className="hero-block">
-        <div>
-          <Headline text="A better way to enjoy your day" />
-          <Subheading text="Be the first to know when we launch" />
-          <CustomButton text="Request an invite" onClick={toggleModal} />
-          {showModal && (
-            <Modal toggleModal={toggleModal}>
-              <Register toggleModal={toggleModal} />
-            </Modal>
-          )}
-        </div>
+        <Headline text="A better way to enjoy your day" />
+        <Subheading text="Be the first to know when we launch" />
+        <CustomButton text="Request an invite" onClick={toggleModal} type="primary" />
+        {showModal && (
+          <Modal toggleModal={toggleModal}>
+            <Register toggleModal={toggleModal} />
+          </Modal>
+        )}
       </div>
     </div>
   );
