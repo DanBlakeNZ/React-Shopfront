@@ -11,7 +11,7 @@ html {
 // Because 16 * .625 = 10, so now we can work with rems in a base 10 system just like pixels. eg 2.2 rems = 22px.
 
 body {
-  font-family: sans-serif;
+  font-family: "Nunito", sans-serif;
   font-size: 1.6rem;
   font-style: normal;
   font-weight: 400;
@@ -20,6 +20,11 @@ body {
   -moz-osx-font-smoothing: grayscale;
   scroll-behavior: smooth;
   line-height: 1.25em;
+}
+
+button {
+  border: none;
+  cursor: pointer;
 }
 
 // Global Classes

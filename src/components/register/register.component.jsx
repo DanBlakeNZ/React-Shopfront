@@ -1,28 +1,40 @@
-import React, { useState } from "react";
+import React from "react";
 import Spinner from "../spinner/spinner.component";
 import RegisterForm from "../register-form/register-form.component";
-import CustomButton from "../custom-button/custom-button.component";
+import TextWithButton from "../text-with-button/text-with-button.component";
 import RegisterTypes from "../../constants/register.types"; //Used to avoid typos
 
-const Register = (props) => {
-  const [registrationProgress, setRegistrationProgress] = useState(
-    RegisterTypes.INCOMPLETE
-  );
+class Register extends React.Component {
+  constructor(props) {
+    super(props);
 
-  return (
-    <div>
-      {registrationProgress === RegisterTypes.INCOMPLETE && (
-        <RegisterForm updateProgress={setRegistrationProgress} />
-      )}
-      {registrationProgress === RegisterTypes.SUBMITTING && <Spinner />}
-      {registrationProgress === RegisterTypes.COMPLETE && (
-        <div>
-          <p>Thanks!</p>
-          <CustomButton text="Close" onClick={props.toggleModal} />
-        </div>
-      )}
-    </div>
-  );
-};
+    this.state = {
+      registrationProgress: RegisterTypes.INCOMPLETE,
+    };
+  }
+
+  setRegistrationProgress = (progress) => {
+    this.setState({ registrationProgress: progress });
+  };
+
+  closeModal = () => {
+    this.props.toggleModal();
+  };
+
+  render() {
+    const { registrationProgress } = this.state;
+    return (
+      <div className="register">
+        {registrationProgress === RegisterTypes.INCOMPLETE && (
+          <RegisterForm updateProgress={this.setRegistrationProgress} />
+        )}
+        {registrationProgress === RegisterTypes.SUBMITTING && <Spinner />}
+        {registrationProgress === RegisterTypes.COMPLETE && (
+          <TextWithButton onClick={this.closeModal}>Thanks!</TextWithButton>
+        )}
+      </div>
+    );
+  }
+}
 
 export default Register;

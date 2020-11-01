@@ -116,13 +116,14 @@ class Register extends React.Component {
           onChange={this.handleChange}
           required
         />
-        <CustomButton text="Submit" />
 
         {errors.map((error, i) => (
           <Notification key={i} type={error.errorType}>
             {error.message}
           </Notification>
         ))}
+
+        <CustomButton text="Submit" />
       </form>
     );
   }

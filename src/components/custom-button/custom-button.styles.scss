@@ -1,0 +1,10 @@
+.custom-button {
+  color: #fff;
+  padding: 1rem 1.5rem;
+  border-radius: 2rem;
+  min-width: 10rem;
+
+  &.primary {
+    background: $hotpink;
+  }
+}

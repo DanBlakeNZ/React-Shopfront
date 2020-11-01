@@ -18,9 +18,9 @@ class Modal extends React.Component {
     return (
       <div className="modal-shade center-content" onClick={handleOutsideClick}>
         <div className="modal-content-container center-content" ref={this.modalRef}>
-          <div className="close-button" onClick={toggleModal}>
+          <button className="close-button" onClick={toggleModal}>
             X
-          </div>
+          </button>
           {children}
         </div>
       </div>

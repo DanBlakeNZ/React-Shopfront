@@ -2,9 +2,39 @@
   width: 100%;
   max-width: 60rem;
   height: 40rem;
-  background-color: $hotpink;
   align-items: center;
   display: flex;
   justify-content: center;
   text-align: center;
+  color: #000;
+  h2 {
+    margin-bottom: 2rem;
+  }
 }
+
+.homepage {
+  background-image: url("https://res.cloudinary.com/dblakenzcloud/image/upload/v1604139616/airwallex/bg9.jpg");
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+// .homepage {
+//   background: linear-gradient(80deg, #2455eb, #24ddeb, #59eb24);
+//   background-size: 600% 600%;
+//   animation: GradientBackground 60s ease infinite;
+
+//   @keyframes GradientBackground {
+//     0% {
+//       background-position: 0% 50%;
+//     }
+
+//     50% {
+//       background-position: 100% 50%;
+//     }
+
+//     100% {
+//       background-position: 0% 50%;
+//     }
+//   }
+// }
