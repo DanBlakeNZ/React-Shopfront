@@ -1,40 +1,25 @@
 .hero-block {
   width: 100%;
-  max-width: 60rem;
-  height: 40rem;
+  max-width: 45rem;
+  height: 50rem;
   align-items: center;
   justify-content: center;
   text-align: center;
   padding: $padding-small;
   letter-spacing: 0.1rem;
-  h2 {
-    margin-bottom: 2rem;
+
+  .headline {
+    margin-top: 0;
+  }
+
+  .subheading {
+    margin: 3rem 0;
   }
 }
 
 .homepage {
-  background-image: url("https://res.cloudinary.com/dblakenzcloud/image/upload/v1604139616/airwallex/bg9.jpg");
+  background-image: url("https://res.cloudinary.com/dblakenzcloud/image/upload/v1604139616/airwallex/29.jpg");
   background-position: center center;
   background-repeat: no-repeat;
   background-size: cover;
 }
-
-// .homepage {
-//   background: linear-gradient(80deg, #2455eb, #24ddeb, #59eb24);
-//   background-size: 600% 600%;
-//   animation: GradientBackground 60s ease infinite;
-
-//   @keyframes GradientBackground {
-//     0% {
-//       background-position: 0% 50%;
-//     }
-
-//     50% {
-//       background-position: 100% 50%;
-//     }
-
-//     100% {
-//       background-position: 0% 50%;
-//     }
-//   }
-// }

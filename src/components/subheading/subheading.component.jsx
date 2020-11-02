@@ -1,5 +1,5 @@
 import React from "react";
 
-const Subheading = ({ text }) => <h2>{text}</h2>;
+const Subheading = ({ children }) => <h2 className="subheading">{children}</h2>;
 
 export default Subheading;

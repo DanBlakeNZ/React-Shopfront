@@ -1,11 +1,12 @@
 import React from "react";
 import registerDetails from "../../services/register";
+import RegisterTypes from "../../constants/register.types";
 import EmailValidator from "email-validator";
 import Spinner from "../spinner/spinner.component";
 import CustomButton from "../custom-button/custom-button.component";
 import FormInput from "../form-input/form-input.component";
 import Notification from "../notification/notification.component";
-import RegisterTypes from "../../constants/register.types";
+import Subheading from "../subheading/subheading.component";
 
 class Register extends React.Component {
   constructor(props) {
@@ -27,6 +28,7 @@ class Register extends React.Component {
   handleSubmit = (event) => {
     event.preventDefault();
     const { name, email, confirmEmail } = this.state;
+
     this.setState({ errors: [] });
 
     this.fieldsAreValid(name, email, confirmEmail) &&
@@ -37,6 +39,7 @@ class Register extends React.Component {
     const nameIsValid = this.validateName(name);
     const matchingEmails = this.validateConfirmEmail(email, confirmEmail);
     const emailIsValid = this.validateEmail(email);
+
     return nameIsValid && matchingEmails && emailIsValid;
   };
 
@@ -94,45 +97,48 @@ class Register extends React.Component {
   render() {
     const { name, email, confirmEmail, errors } = this.state;
     return (
-      <div>
-        {this.props.registrationProgress === RegisterTypes.SUBMITTING ? (
+      <div className="register-form-wrapper">
+        {this.props.progress === RegisterTypes.SUBMITTING ? (
           <Spinner />
         ) : (
-          <form className="register-form" onSubmit={this.handleSubmit}>
-            <FormInput
-              type="text"
-              name="name"
-              value={name}
-              label="Full Name"
-              onChange={this.handleChange}
-              required
-              autoFocus
-            />
-            <FormInput
-              type="email"
-              name="email"
-              value={email}
-              label="Email"
-              onChange={this.handleChange}
-              required
-            />
-            <FormInput
-              type="email"
-              name="confirmEmail"
-              value={confirmEmail}
-              label="Confirm Email"
-              onChange={this.handleChange}
-              required
-            />
+          <>
+            <h3>Request an invite</h3>
+            <form className="register-form" onSubmit={this.handleSubmit}>
+              <FormInput
+                type="text"
+                name="name"
+                value={name}
+                label="Full Name"
+                onChange={this.handleChange}
+                required
+                autoFocus
+              />
+              <FormInput
+                type="email"
+                name="email"
+                value={email}
+                label="Email"
+                onChange={this.handleChange}
+                required
+              />
+              <FormInput
+                type="email"
+                name="confirmEmail"
+                value={confirmEmail}
+                label="Confirm Email"
+                onChange={this.handleChange}
+                required
+              />
 
-            {errors.map((error, i) => (
-              <Notification key={i} type={error.errorType}>
-                {error.message}
-              </Notification>
-            ))}
+              {errors.map((error, i) => (
+                <Notification key={i} type={error.errorType}>
+                  {error.message}
+                </Notification>
+              ))}
 
-            <CustomButton text="Submit" type="secondary" />
-          </form>
+              <CustomButton text="Submit" type="secondary" fullWidth={true} />
+            </form>
+          </>
         )}
       </div>
     );
