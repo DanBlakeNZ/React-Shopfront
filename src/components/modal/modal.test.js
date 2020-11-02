@@ -18,11 +18,5 @@ describe("Modal", () => {
     expect(wrap.containsMatchingElement(modalChild)).toEqual(true);
   });
 
-  it("close button calls toggleModal function", () => {
-    expect(onClick).not.toBeCalled();
-    wrap.find("button").simulate("click");
-    expect(onClick).toBeCalled();
-  });
-
   // Test modal shade closing
 });

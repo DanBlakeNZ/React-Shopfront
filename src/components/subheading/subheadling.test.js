@@ -5,7 +5,7 @@ import Subheading from "./subheading.component";
 
 describe("Subheading component", () => {
   const testText = "Test text";
-  const wrap = shallow(<Subheading text={testText} />);
+  const wrap = shallow(<Subheading>{testText}</Subheading>);
 
   it("renders without crashing", () => {
     const div = document.createElement("div");

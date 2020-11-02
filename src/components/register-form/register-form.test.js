@@ -4,6 +4,12 @@ import { shallow } from "enzyme";
 import RegisterForm from "./register-form.component";
 
 const wrap = shallow(<RegisterForm />);
+const validName = "John";
+const invalidName = "Da";
+const validEmail = "john@example.com";
+const invalidEmail = "john@examplecom";
+const matchingEmail = "john@example.com";
+const invalidMatchingEmail = "john1@example.com";
 
 describe("RegisterForm", () => {
   it("renders without crashing", () => {
@@ -12,50 +18,65 @@ describe("RegisterForm", () => {
   });
 });
 
-describe("validateName method", () => {
-  it("returns true with a name of 3 or more characters", () => {
-    expect(wrap.instance().validateName("Dan")).toEqual(true);
-  });
-
-  it("returns false with a name of less than 3 characters", () => {
-    expect(wrap.instance().validateName("Da")).toEqual(false);
-  });
-});
-
-describe("validateConfirmEmail method", () => {
-  it("returns true when provided matching emails", () => {
+describe("validateAllFields method", () => {
+  it("if all fields are valid, true is returned", () => {
     expect(
-      wrap.instance().validateConfirmEmail("john@test.com", "john@test.com")
+      wrap.instance().validateAllFields(validName, validEmail, matchingEmail)
     ).toEqual(true);
   });
 
-  it("returns true when provided different emails", () => {
-    expect(wrap.instance().validateConfirmEmail("sam@test.com", "john@test.com")).toEqual(
-      false
-    );
-  });
-});
-
-describe("validateEmail method", () => {
-  it("returns true when provided a valid email", () => {
-    expect(wrap.instance().validateEmail("john@test.com")).toEqual(true);
-  });
-
-  it("returns true when provided an invalid email", () => {
-    expect(wrap.instance().validateEmail("sam@.com")).toEqual(false);
-  });
-});
-
-describe("fieldsAreValid method", () => {
-  it("returns true when provided a valid name, email and confirm email", () => {
+  it("if an invalid name is passed, false is returned", () => {
     expect(
-      wrap.instance().fieldsAreValid("John", "john@test.com", "john@test.com")
-    ).toEqual(true);
+      wrap.instance().validateAllFields(invalidName, validEmail, matchingEmail)
+    ).toEqual(false);
   });
 
-  it("returns false when provided a valid name, confirm email but an invalid email", () => {
-    expect(wrap.instance().fieldsAreValid("John", "john@.com", "john@test.com")).toEqual(
-      false
-    );
+  it("if an invalid email is passed, false is returned", () => {
+    expect(
+      wrap.instance().validateAllFields(validName, invalidEmail, invalidEmail)
+    ).toEqual(false);
+  });
+
+  it("if an emails don't match, false is returned", () => {
+    expect(
+      wrap.instance().validateAllFields(validName, validEmail, invalidMatchingEmail)
+    ).toEqual(false);
+  });
+});
+
+describe("setErrorText method", () => {
+  const errorText = {
+    name: { text: "Full Name must be at least 3 characters long." },
+    confirmEmail: { text: "Emails don't match." },
+    email: { text: "Please enter a valid email." },
+    unknown: { text: "Sorry, something went wrong. Please try again." },
+  };
+
+  it("name error text is set to state", () => {
+    wrap.setState({ errors: [] });
+    expect(wrap.state("errors")).toEqual([]);
+    wrap.instance().setErrorText("name");
+    expect(wrap.state("errors")).toEqual([{ message: errorText.name.text }]);
+  });
+
+  it("confirmEmail error text is set to state", () => {
+    wrap.setState({ errors: [] });
+    expect(wrap.state("errors")).toEqual([]);
+    wrap.instance().setErrorText("confirmEmail");
+    expect(wrap.state("errors")).toEqual([{ message: errorText.confirmEmail.text }]);
+  });
+
+  it("email error text is set to state", () => {
+    wrap.setState({ errors: [] });
+    expect(wrap.state("errors")).toEqual([]);
+    wrap.instance().setErrorText("email");
+    expect(wrap.state("errors")).toEqual([{ message: errorText.email.text }]);
+  });
+
+  it("unknown error text is set to state", () => {
+    wrap.setState({ errors: [] });
+    expect(wrap.state("errors")).toEqual([]);
+    wrap.instance().setErrorText("unknown");
+    expect(wrap.state("errors")).toEqual([{ message: errorText.unknown.text }]);
   });
 });

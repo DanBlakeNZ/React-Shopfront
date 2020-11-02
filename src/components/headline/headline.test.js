@@ -5,7 +5,7 @@ import Headline from "./headline.component";
 
 describe("Headline component", () => {
   const testText = "Test text";
-  const wrap = shallow(<Headline text={testText} />);
+  const wrap = shallow(<Headline>{testText}</Headline>);
 
   it("renders without crashing", () => {
     const div = document.createElement("div");

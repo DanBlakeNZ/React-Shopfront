@@ -7,9 +7,7 @@ class Register extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-      progress: RegisterTypes.INCOMPLETE,
-    };
+    this.state = { progress: RegisterTypes.INCOMPLETE };
   }
 
   setProgress = (progress) => {

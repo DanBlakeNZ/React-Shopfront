@@ -20,6 +20,7 @@ class Register extends React.Component {
     };
   }
 
+  // Updates state with a error message text.
   setErrorText(fieldName) {
     const errorText = {
       name: { text: "Full Name must be at least 3 characters long." },
@@ -29,32 +30,34 @@ class Register extends React.Component {
     };
 
     this.setState((prevState) => ({
-      errors: [
-        ...prevState.errors,
-        { errorType: "danger", message: errorText[fieldName].text },
-      ],
+      errors: [...prevState.errors, { message: errorText[fieldName].text }],
     }));
   }
 
+  // When fields change, state is updated.
   handleChange = (event) => {
     const { name, value } = event.target;
     this.setState({ [name]: value });
   };
 
+  // When the submit button is clicked.
+  // If all fields are valid, calls performRegistration.
   handleSubmit = (event) => {
     event.preventDefault();
     const { name, email, confirmEmail } = this.state;
     this.setState({ errors: [] });
 
     if (this.validateAllFields(name, email, confirmEmail)) {
-      this.handleRegistration(name, email);
+      this.performRegistration(name, email);
     }
   };
 
+  // Checks values in each field are valid.
+  // If invalid, sets error text is set in state via setErrorText.
   validateAllFields = (name, email, confirmEmail) => {
     let invalidFields = false;
     let fields = [
-      { fieldName: "name", isValid: () => name.length > 3 },
+      { fieldName: "name", isValid: () => name.length > 2 },
       { fieldName: "confirmEmail", isValid: () => email === confirmEmail },
       { fieldName: "email", isValid: () => EmailValidator.validate(email) },
     ];
@@ -69,7 +72,9 @@ class Register extends React.Component {
     return !invalidFields;
   };
 
-  handleRegistration = (name, email) => {
+  // Performs the registration by passing details to registerDetails function.
+  // Handles any errors.
+  performRegistration = (name, email) => {
     this.props.updateProgress(RegisterTypes.SUBMITTING);
 
     const handleError = (response) => {
@@ -128,7 +133,7 @@ class Register extends React.Component {
             />
 
             {errors.map((error, i) => (
-              <Notification key={i} type={error.errorType}>
+              <Notification key={i} type="danger">
                 {error.message}
               </Notification>
             ))}
