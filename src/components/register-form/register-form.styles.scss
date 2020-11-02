@@ -1,4 +1,24 @@
+.register-form-wrapper {
+  .spinner {
+    display: none;
+  }
+}
+
+.register-form-wrapper.submitting {
+  .spinner {
+    display: block;
+  }
+
+  .form-container {
+    display: none;
+  }
+}
+
 .register-form {
+  .notification {
+    text-align: left;
+  }
+
   .custom-button {
     margin-top: 1.5rem;
   }

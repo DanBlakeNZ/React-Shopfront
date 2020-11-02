@@ -6,7 +6,7 @@ import Spinner from "../spinner/spinner.component";
 import CustomButton from "../custom-button/custom-button.component";
 import FormInput from "../form-input/form-input.component";
 import Notification from "../notification/notification.component";
-import Subheading from "../subheading/subheading.component";
+import Spacer from "../spacer/spacer.component";
 
 class Register extends React.Component {
   constructor(props) {
@@ -20,6 +20,22 @@ class Register extends React.Component {
     };
   }
 
+  setErrorText(fieldName) {
+    const errorText = {
+      name: { text: "Full Name must be at least 3 characters long." },
+      confirmEmail: { text: "Emails don't match." },
+      email: { text: "Please enter a valid email." },
+      unknown: { text: "Sorry, something went wrong. Please try again." },
+    };
+
+    this.setState((prevState) => ({
+      errors: [
+        ...prevState.errors,
+        { errorType: "danger", message: errorText[fieldName].text },
+      ],
+    }));
+  }
+
   handleChange = (event) => {
     const { name, value } = event.target;
     this.setState({ [name]: value });
@@ -28,31 +44,38 @@ class Register extends React.Component {
   handleSubmit = (event) => {
     event.preventDefault();
     const { name, email, confirmEmail } = this.state;
-
     this.setState({ errors: [] });
 
-    this.fieldsAreValid(name, email, confirmEmail) &&
+    if (this.validateAllFields(name, email, confirmEmail)) {
       this.handleRegistration(name, email);
+    }
   };
 
-  fieldsAreValid = (name, email, confirmEmail) => {
-    const nameIsValid = this.validateName(name);
-    const matchingEmails = this.validateConfirmEmail(email, confirmEmail);
-    const emailIsValid = this.validateEmail(email);
+  validateAllFields = (name, email, confirmEmail) => {
+    let invalidFields = false;
+    let fields = [
+      { fieldName: "name", isValid: () => name.length > 3 },
+      { fieldName: "confirmEmail", isValid: () => email === confirmEmail },
+      { fieldName: "email", isValid: () => EmailValidator.validate(email) },
+    ];
 
-    return nameIsValid && matchingEmails && emailIsValid;
+    for (let i = 0; i < fields.length; i++) {
+      if (!fields[i].isValid()) {
+        this.setErrorText(fields[i].fieldName);
+        invalidFields = true;
+      }
+    }
+
+    return !invalidFields;
   };
 
   handleRegistration = (name, email) => {
     this.props.updateProgress(RegisterTypes.SUBMITTING);
 
-    const handleError = (error) => {
-      console.log(error);
+    const handleError = (response) => {
+      console.log(response);
       this.props.updateProgress(RegisterTypes.INCOMPLETE);
-      this.setErrorText(
-        "Sorry, something went wrong. Please check your details and try again.",
-        "danger"
-      );
+      this.setErrorText("unknown");
     };
 
     registerDetails(name, email).then((response) => {
@@ -64,82 +87,55 @@ class Register extends React.Component {
     });
   };
 
-  validateName = (name) => {
-    if (name.length < 3) {
-      this.setErrorText("Full Name must be at least 3 characters long.", "danger");
-      return false;
-    }
-    return true;
-  };
-
-  validateConfirmEmail = (email, confirmEmail) => {
-    if (email !== confirmEmail) {
-      this.setErrorText("Emails don't match.", "danger");
-      return false;
-    }
-    return true;
-  };
-
-  validateEmail = (email) => {
-    if (!EmailValidator.validate(email)) {
-      this.setErrorText("Please enter a valid email.", "danger");
-      return false;
-    }
-    return true;
-  };
-
-  setErrorText(errorText, errorType) {
-    this.setState((prevState) => ({
-      errors: [...prevState.errors, { errorType, message: errorText }],
-    }));
-  }
-
   render() {
     const { name, email, confirmEmail, errors } = this.state;
+
     return (
-      <div className="register-form-wrapper">
-        {this.props.progress === RegisterTypes.SUBMITTING ? (
-          <Spinner />
-        ) : (
-          <>
-            <h3>Request an invite</h3>
-            <form className="register-form" onSubmit={this.handleSubmit}>
-              <FormInput
-                type="text"
-                name="name"
-                value={name}
-                label="Full Name"
-                onChange={this.handleChange}
-                required
-                autoFocus
-              />
-              <FormInput
-                type="email"
-                name="email"
-                value={email}
-                label="Email"
-                onChange={this.handleChange}
-                required
-              />
-              <FormInput
-                type="email"
-                name="confirmEmail"
-                value={confirmEmail}
-                label="Confirm Email"
-                onChange={this.handleChange}
-                required
-              />
+      <div
+        className={`register-form-wrapper ${
+          this.props.progress === RegisterTypes.SUBMITTING && "submitting"
+        }`}
+      >
+        <Spinner />
+        <div className="form-container">
+          <h3>Request an invite</h3>
+          <Spacer />
+          <form className="register-form" onSubmit={this.handleSubmit}>
+            <FormInput
+              type="text"
+              name="name"
+              value={name}
+              label="Full Name"
+              onChange={this.handleChange}
+              required
+              autoFocus
+            />
+            <FormInput
+              type="email"
+              name="email"
+              value={email}
+              label="Email"
+              onChange={this.handleChange}
+              required
+            />
+            <FormInput
+              type="email"
+              name="confirmEmail"
+              value={confirmEmail}
+              label="Confirm Email"
+              onChange={this.handleChange}
+              required
+            />
 
-              {errors.map((error, i) => (
-                <Notification key={i} type={error.errorType}>
-                  {error.message}
-                </Notification>
-              ))}
+            {errors.map((error, i) => (
+              <Notification key={i} type={error.errorType}>
+                {error.message}
+              </Notification>
+            ))}
 
-              <CustomButton text="Submit" type="secondary" fullWidth={true} />
-            </form>
-          </>
-        )}
+            <CustomButton text="Submit" type="secondary" fullWidth={true} />
+          </form>
+        </div>
       </div>
     );
   }

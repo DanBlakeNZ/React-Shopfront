@@ -1,6 +1,16 @@
 .headline {
-  font-size: 4.7rem;
-  line-height: 5.7rem;
+  font-size: 3rem;
+  line-height: 4rem;
   color: $purple;
   font-family: $josefin;
+
+  @media (min-width: $tiny) {
+    font-size: 4rem;
+    line-height: 5rem;
+  }
+
+  @media (min-width: $xsmall) {
+    font-size: 4.7rem;
+    line-height: 5.7rem;
+  }
 }
