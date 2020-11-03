@@ -1,34 +1,48 @@
-import React, { useState } from "react";
+import React from "react";
 import CustomButton from "../../components/custom-button/custom-button.component";
 import Headline from "../../components/headline/headline.component";
 import Modal from "../../components/modal/modal.component";
 import Subheading from "../../components/subheading/subheading.component";
 import Register from "../../components/register/register.component";
 
-const HomePage = () => {
-  const [showModal, setShowModal] = useState(false);
+class HomePage extends React.Component {
+  constructor(props) {
+    super(props);
 
-  const toggleModal = () => {
-    setShowModal(!showModal);
+    this.state = {
+      showModal: false,
+    };
+  }
+
+  toggleModal = () => {
+    this.setState((prevState) => ({
+      showModal: !prevState.showModal,
+    }));
   };
 
-  return (
-    <div className="page homepage center-content">
-      <div className="hero-block">
-        <Headline>
-          A better way
-          <br /> to enjoy every day.
-        </Headline>
-        <Subheading>Be the first to know when we launch.</Subheading>
-        <CustomButton text="Request an invite" onClick={toggleModal} type="primary" />
-        {showModal && (
-          <Modal toggleModal={toggleModal}>
-            <Register toggleModal={toggleModal} />
-          </Modal>
-        )}
+  render() {
+    return (
+      <div className="page homepage center-content">
+        <div className="hero-block">
+          <Headline>
+            A better way
+            <br /> to enjoy every day.
+          </Headline>
+          <Subheading>Be the first to know when we launch.</Subheading>
+          <CustomButton
+            text="Request an invite"
+            onClick={this.toggleModal}
+            type="primary"
+          />
+          {this.state.showModal && (
+            <Modal toggleModal={this.toggleModal}>
+              <Register toggleModal={this.toggleModal} />
+            </Modal>
+          )}
+        </div>
       </div>
-    </div>
-  );
-};
+    );
+  }
+}
 
 export default HomePage;

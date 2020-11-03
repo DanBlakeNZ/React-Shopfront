@@ -49,7 +49,7 @@ describe("setErrorText method", () => {
     name: { text: "Full Name must be at least 3 characters long." },
     confirmEmail: { text: "Emails don't match." },
     email: { text: "Please enter a valid email." },
-    unknown: { text: "Sorry, something went wrong. Please try again." },
+    unknown: { text: "Sorry something went wrong, please try again." },
   };
 
   it("name error text is set to state", () => {

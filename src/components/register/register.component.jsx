@@ -22,10 +22,11 @@ class Register extends React.Component {
     const { progress } = this.state;
     return (
       <div className="register">
-        {progress !== RegisterTypes.COMPLETE && (
+        {progress !== RegisterTypes.COMPLETE ? (
           <RegisterForm progress={progress} updateProgress={this.setProgress} />
+        ) : (
+          <Thanks closeModal={this.closeModal} />
         )}
-        {progress === RegisterTypes.COMPLETE && <Thanks closeModal={this.closeModal} />}
       </div>
     );
   }

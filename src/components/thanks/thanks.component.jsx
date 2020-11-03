@@ -10,7 +10,7 @@ const Thanks = ({ closeModal }) => {
       <div className="thanks-text">
         You will be the first to experience Broccoli & Co when we launch.
       </div>
-      <CustomButton text="Ok" type="secondary" onClick={closeModal} />
+      <CustomButton text="Ok" type="secondary" onClick={closeModal} fullWidth />
     </div>
   );
 };

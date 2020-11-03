@@ -2,6 +2,8 @@
   "name": "airwallex",
   "version": "0.1.0",
   "private": true,
+  "repository": "git@github.com:DanBlakeNZ/airwallex.git",
+  "author": "DanBlakeNZ <dblakenz@hotmail.com>",
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",

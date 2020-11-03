@@ -26,7 +26,7 @@ class Register extends React.Component {
       name: { text: "Full Name must be at least 3 characters long." },
       confirmEmail: { text: "Emails don't match." },
       email: { text: "Please enter a valid email." },
-      unknown: { text: "Sorry, something went wrong. Please try again." },
+      unknown: { text: "Sorry something went wrong, please try again." },
     };
 
     this.setState((prevState) => ({
@@ -48,7 +48,7 @@ class Register extends React.Component {
     this.setState({ errors: [] });
 
     if (this.validateAllFields(name, email, confirmEmail)) {
-      this.performRegistration(name, email);
+      this.performRegistration(name, email.toLowerCase());
     }
   };
 
@@ -58,10 +58,14 @@ class Register extends React.Component {
     let invalidFields = false;
     let fields = [
       { fieldName: "name", isValid: () => name.length > 2 },
-      { fieldName: "confirmEmail", isValid: () => email === confirmEmail },
+      {
+        fieldName: "confirmEmail",
+        isValid: () => email.toLowerCase() === confirmEmail.toLowerCase(),
+      },
       { fieldName: "email", isValid: () => EmailValidator.validate(email) },
     ];
 
+    // Confirm each field is valid, if not call setErrorText method.
     for (let i = 0; i < fields.length; i++) {
       if (!fields[i].isValid()) {
         this.setErrorText(fields[i].fieldName);
@@ -73,10 +77,10 @@ class Register extends React.Component {
   };
 
   // Performs the registration by passing details to registerDetails function.
-  // Handles any errors.
   performRegistration = (name, email) => {
     this.props.updateProgress(RegisterTypes.SUBMITTING);
 
+    // Handles any errors returned from the registerDetails post call.
     const handleError = (response) => {
       console.log(response);
       this.props.updateProgress(RegisterTypes.INCOMPLETE);
@@ -102,6 +106,7 @@ class Register extends React.Component {
         }`}
       >
         <Spinner />
+
         <div className="form-container">
           <h3>Request an invite</h3>
           <Spacer />
@@ -138,7 +143,7 @@ class Register extends React.Component {
               </Notification>
             ))}
 
-            <CustomButton text="Submit" type="secondary" fullWidth={true} />
+            <CustomButton text="Submit" type="secondary" fullWidth />
           </form>
         </div>
       </div>
