@@ -1,6 +1,4 @@
-## Live version
 
-A live version of this project can be viewed at [https://dblakenz-airwallex.herokuapp.com/](https://dblakenz-airwallex.herokuapp.com/)
 
 ### `yarn install` or `npm install`
 
